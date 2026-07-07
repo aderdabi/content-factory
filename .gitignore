@@ -1,0 +1,19 @@
+# Secrets
+.env
+.env.local
+*.key
+
+# Data & artifacts
+raw/
+output/
+runs/cache/
+
+# Dependencies
+node_modules/
+
+# System
+.DS_Store
+
+# Binaries & build
+*.bin
+__pycache__/
