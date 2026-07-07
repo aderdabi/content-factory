@@ -3,10 +3,15 @@
 .env.local
 *.key
 
-# Data & artifacts
-raw/
-output/
+# Data & artifacts (keep the folders, ignore their contents)
+raw/*
+!raw/.gitkeep
+output/*
+!output/.gitkeep
 runs/cache/
+
+# External source media — never committed
+external-data/
 
 # Dependencies
 node_modules/
