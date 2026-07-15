@@ -45,9 +45,22 @@ Cost is governed, not assumed.
 
 The €30/month ceiling is a hard limit, not a target.
 
-## 5. Anti-patterns
+## 5. Brand generation
+
+Every generated image that carries my likeness runs against the same reference. Consistency is the point: one face, one treatment, across every asset the Factory ships.
+
+- **Default reference:** `raw/brand-refs/portraitUN.jpg`
+- **Method:** IP-Adapter
+- **Default weight:** `0.75`
+
+The weight is a default, not a constant. Deviate when a specific asset calls for it, and say so in the run notes.
+
+Reference images live in `raw/brand-refs/`. They are the one category of `raw/` material cleared for upload — see §6.
+
+## 6. Anti-patterns
 
 Non-negotiable. These protect the asset.
 
 - **Never commit `.env`** (or any secret: `.env.local`, `*.key`). They are gitignored — keep it that way.
 - **Never upload `raw/` to Replicate.** Raw source material stays local. Send only the specific processed clip a step requires.
+  - **Sole exception:** `raw/brand-refs/` — curated references I chose to define the brand, cleared for upload as generation input per §5. The rule protects client and source material from leaving the machine. It does not cover my own reference set.
