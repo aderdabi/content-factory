@@ -1,0 +1,9 @@
+{
+  "name": "content-factory-svg-slides",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Exact SVG->PNG course-slide generator (data slides). Illustrations use gpt-image-2.",
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2"
+  }
+}

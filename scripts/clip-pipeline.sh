@@ -23,7 +23,7 @@ WHISPER_QUEUE="${WHISPER_QUEUE:-15}"   # compute queue -> whisper -t (threads)
 TARGET_W=1080                          # vertical output width  (9:16)
 TARGET_H=1920                          # vertical output height (9:16)
 SUB_FONT="Helvetica"
-SUB_SIZE=24
+SUB_SIZE="${SUB_SIZE:-10}"              # subtitle font size (libass units, ~6.7x at 1920p); override e.g. SUB_SIZE=8
 
 # ---------------------------------------------------------------------------
 # Arguments

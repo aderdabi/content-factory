@@ -1,0 +1,1 @@
+Create a 16:9 course slide in the exact visual style of the attached reference slide (cream background, green two-tone condensed uppercase headline with underline, thin-line icons in sage circles, leaf sprig right edge, brand block top left 'SUSTAINABLE BUSINESS MODELS', pill top right 'MODULE 4 OF 7'). Main headline: 'YOUR HEADLINE' ... (write the full gpt-image-2 prompt here).
