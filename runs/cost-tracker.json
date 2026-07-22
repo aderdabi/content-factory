@@ -1,10 +1,10 @@
 {
   "month": "2026-07",
   "limit_usd": 30,
-  "spent_usd": 6.4369999999999985,
+  "spent_usd": 14.017,
   "by_tool": {
     "flux-schnell": 0.018,
-    "elevenlabs": 6.248999999999999,
-    "gpt-image": 0.17
+    "elevenlabs": 12.468999999999998,
+    "gpt-image": 1.5299999999999998
   }
 }
