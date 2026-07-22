@@ -67,8 +67,12 @@ if [[ $DO_SLIDES -eq 1 ]]; then
   echo "[build] generating ${#PROMPTS[@]} slides via gpt-image-2 ..."
   i=0
   for p in "${PROMPTS[@]}"; do
-    i=$((i+1)); nn=$(printf '%02d' "$i")
-    echo "  slide $nn  ($(basename "$p"))"
+    i=$((i+1))
+    # Number by the file's leading digits (01-foo.txt -> 01) so gpt prompts can be
+    # sparse and an optional slides-svg.js fills/overrides the rest. Falls back to order.
+    base="$(basename "$p")"
+    if [[ "$base" =~ ^0*([0-9]+) ]]; then nn=$(printf '%02d' "$((10#${BASH_REMATCH[1]}))"); else nn=$(printf '%02d' "$i"); fi
+    echo "  slide $nn  ($base)"
     ok=0
     for attempt in 1 2 3; do
       if OUT_DIR="$SLIDES_OUT" "$SCRIPT_DIR/gen-image-gpt.sh" "$(cat "$p")" "${MODULE}-s${nn}.png" "$REF" < /dev/null > /tmp/build-slide.log 2>&1; then
@@ -81,6 +85,10 @@ if [[ $DO_SLIDES -eq 1 ]]; then
   done
   # Optional exact-SVG override for data-heavy slides.
   if [[ -f "$MODDIR/slides-svg.js" ]]; then
+    # Back up the raw gpt illustrations so composites can read the source even
+    # after SVG overrides overwrite the same filenames (idempotent re-renders).
+    mkdir -p "$SLIDES_OUT/.gpt-src"
+    cp -f "$SLIDES_OUT"/*.png "$SLIDES_OUT/.gpt-src/" 2>/dev/null || true
     echo "[build] applying SVG overrides (slides-svg.js) ..."
     MODULE="$MODULE" node "$MODDIR/slides-svg.js" "$SLIDES_OUT"
   fi
@@ -95,8 +103,10 @@ if [[ $DO_VO -eq 1 ]]; then
   echo "[build] generating ${#VOS[@]} voiceovers via ElevenLabs ..."
   i=0
   for v in "${VOS[@]}"; do
-    i=$((i+1)); nn=$(printf '%02d' "$i")
-    echo "  vo $nn  ($(basename "$v"))"
+    i=$((i+1))
+    base="$(basename "$v")"
+    if [[ "$base" =~ ^0*([0-9]+) ]]; then nn=$(printf '%02d' "$((10#${BASH_REMATCH[1]}))"); else nn=$(printf '%02d' "$i"); fi
+    echo "  vo $nn  ($base)"
     OUT_DIR="$VO_OUT" "$SCRIPT_DIR/gen-voiceover.sh" "$(cat "$v")" "${MODULE}-vo-${nn}.mp3" < /dev/null 2>&1 | grep -E 'Booked|Error' || true
   done
   echo "[build] voiceovers -> $VO_OUT"

@@ -47,7 +47,9 @@ function decor() {
 }
 
 function head(main, sub, cx = 780) {
-  let s = `<text x="${cx}" y="150" font-family="${F}" font-size="54" font-weight="800" fill="${C.dark}" text-anchor="middle" letter-spacing="1">${esc(main)}</text>`;
+  // Auto-shrink very long headlines so they don't collide with the brand block.
+  const fs = main.length > 33 ? 40 : (main.length > 29 ? 48 : 54);
+  let s = `<text x="${cx}" y="150" font-family="${F}" font-size="${fs}" font-weight="800" fill="${C.dark}" text-anchor="middle" letter-spacing="1">${esc(main)}</text>`;
   if (sub) s += `<text x="${cx}" y="192" font-family="${F}" font-size="24" font-style="italic" fill="${C.med}" text-anchor="middle">${esc(sub)}</text>`;
   s += `<rect x="${cx-52}" y="${sub?205:168}" width="104" height="4" rx="2" fill="${C.med}"/>`;
   return s;
@@ -121,10 +123,19 @@ function image(b64, clip) {
   <image href="data:image/png;base64,${b64}" x="0" y="0" width="${W}" height="${H}" clip-path="url(#clip_${clip.id})"/>`;
 }
 
+// Read a gpt-generated illustration for a composite. Prefers the .gpt-src/
+// backup (written by build-module before SVG overrides) so composites can be
+// re-rendered without the source having been overwritten by a prior composite.
+function readGpt(dir, filename) {
+  const backup = `${dir}/.gpt-src/${filename}`;
+  const path = fs.existsSync(backup) ? backup : `${dir}/${filename}`;
+  return fs.readFileSync(path).toString('base64');
+}
+
 function render(svg, out) {
   const r = new Resvg(svg, { fitTo: { mode:'width', value: W }, font: { loadSystemFonts:true, defaultFontFamily:'Helvetica' } });
   fs.writeFileSync(out, r.render().asPng());
   console.log('  svg ->', out);
 }
 
-module.exports = { W, H, C, F, cfg, esc, header, decor, head, circleIco, panel, ptitle, banner, frame, ic, image, render, fs };
+module.exports = { W, H, C, F, cfg, esc, header, decor, head, circleIco, panel, ptitle, banner, frame, ic, image, render, readGpt, fs };
